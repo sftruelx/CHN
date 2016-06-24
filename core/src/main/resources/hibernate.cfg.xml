@@ -1,0 +1,24 @@
+<!-- The following doctype doesn't work when offline, so default to old one, which does work.
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">-->
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <mapping class="com.mycompany.model.sys.SysRight"/>
+        <mapping class="com.mycompany.model.sys.SysRole"/>
+        <mapping class="com.mycompany.model.sys.SysUser"/>
+        <mapping class="com.mycompany.model.nurse.BizPatient"/>
+        <mapping class="com.mycompany.model.sys.Trainning"/>
+        <mapping class="com.mycompany.model.common.Dispatch"/>
+        <mapping class="com.mycompany.model.sys.Dictionary"/>
+        <mapping class="com.mycompany.model.sys.SysLog"/>
+        <mapping class="com.mycompany.model.sys.SysLogName"/>
+        <mapping class="com.mycompany.model.nurse.BizPatientHistory"/>
+        <mapping class="com.mycompany.model.common.BizItem"/>
+        <mapping class="com.mycompany.model.sys.SysParam"/>
+        <mapping class="com.mycompany.model.nurse.Triage"/>
+        <mapping class="com.mycompany.model.nurse.TriageDetail"/>
+    </session-factory>
+</hibernate-configuration>

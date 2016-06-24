@@ -1,0 +1,18 @@
+
+
+@Action("${classNameLowCase}Action")
+public class ${classNameUpCase}Action extends BaseAction{
+@Autowired
+public ${classNameUpCase}Dao ${classNameLowCase}Dao;
+private List<${classNameUpCase}> ${classNameLowCase}s;
+private ${classNameUpCase} ${classNameLowCase};
+#foreach ($attr in ${attrs})
+private ${attr[0]} ${attr[1]};
+#end
+public String ${classNameLowCase}List() {
+${classNameLowCase}s = ${classNameLowCase}Dao.retrieveAll${classNameUpCase}s();
+return "${classNameLowCase}List.jsp";
+}
+
+...
+}

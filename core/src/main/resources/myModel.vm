@@ -1,0 +1,54 @@
+package com.mycompany.model.sys;
+
+import com.mycompany.model.BaseObject;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@Table(name = "${cd.tableName}")
+@Indexed
+public class ${cd.className} extends BaseObject implements Serializable {
+
+#foreach ($attr in ${cd.attris})
+private ${attr.type} ${attr.name};
+#end
+
+#foreach ($attr in ${cd.attris})
+    #if ($attr.index)
+@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public ${attr.type} get${attr.nameUpCase}() {
+    return ${attr.name};
+    }
+
+    public void set${attr.nameUpCase}(${attr.type} ${attr.name})} {
+    this.${attr.name} = ${attr.name};
+    }
+    #else
+
+    #if($attr.columnName)@Column(name = "${attr.columnName}"#end
+#if($attr.columnNullable), nullable = ${attr.columnNullable}#end
+#if($attr.columnUnique), unique = ${attr.columnUnique}#end
+#if($attr.columnName))#end
+
+    #if($attr.fieldValue)
+@Field
+    #end
+public ${attr.type} get${attr.nameUpCase}() {
+    return ${attr.name};
+    }
+
+    public void set${attr.nameUpCase}(${attr.type} ${attr.name}) {
+    this.${attr.name} = ${attr.name};
+    }
+    #end
+#end
+
+
+
+}

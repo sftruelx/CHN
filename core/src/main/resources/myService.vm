@@ -1,0 +1,13 @@
+package com.mycompany.service.sys;
+
+import com.mycompany.model.nurse.BizPatient;
+import com.mycompany.model.sys.${className};
+import com.mycompany.service.GenericManager;
+import com.mycompany.util.Pagination;
+import com.mycompany.util.QueryObject;
+
+public interface ${className}Manager extends GenericManager<${className}, Long> {
+
+Pagination findListByCondition(QueryObject queryObject, ${className} ${classNameLowCase});
+
+}

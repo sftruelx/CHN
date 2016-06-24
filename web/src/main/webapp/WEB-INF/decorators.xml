@@ -1,0 +1,23 @@
+<decorators defaultdir="/decorators">
+    <excludes>
+        <pattern>/40*.jsp</pattern>
+        <pattern>/*ajax=true*</pattern>
+        <pattern>/struts/*</pattern>
+        <pattern>/resources/*</pattern>
+        <pattern>/demo/bind*</pattern>
+        <pattern>/demo/lore*</pattern>
+        <pattern>/nurse/guideList/*</pattern>
+        <pattern>/demo/nutritionalDiet*</pattern>
+        <pattern>/demo/report*</pattern>
+        <pattern>/demo/noReport*</pattern>
+    </excludes> 
+    <decorator name="default" page="default.jsp">
+        <pattern>/test*</pattern>
+    </decorator>
+    <decorator name="main" page="main.jsp">
+        <pattern>/login</pattern>
+    </decorator>
+    <decorator name="normal" page="normal.jsp">
+        <pattern>/*</pattern>
+    </decorator>
+</decorators>

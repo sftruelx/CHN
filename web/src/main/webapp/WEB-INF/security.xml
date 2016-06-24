@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+             http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/security
+            http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <http pattern="/images/**" security="none"/>
+    <http pattern="/styles/**" security="none"/>
+    <http pattern="/scripts/**" security="none"/>
+    <http pattern="/assets/**" security="none"/>
+    <http pattern="/font/**" security="none"/>
+    <http pattern="/common/**" security="none"/>
+
+    <beans:bean id="customUserDetailsServiceImpl"
+          class="com.mycompany.security.bean.CustomUserDetailsServiceImpl">
+    </beans:bean>
+
+    <beans:bean id="customAccessDecisionManagerImpl"
+          class="com.mycompany.security.bean.CustomAccessDecisionManagerImpl">
+    </beans:bean>
+
+    <beans:bean id="sha" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+    </beans:bean>
+
+    <beans:bean id="customFilterSecurityInterceptorImpl"  class="com.mycompany.security.filter.CustomFilterSecurityInterceptorImpl">
+        <beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
+    </beans:bean>
+
+    <beans:bean id="authenticationSuccessHandler" class="com.mycompany.security.bean.MyLoginSuccessHandler">
+    </beans:bean>
+
+    <beans:bean id="authenticationEntryPoint" class="com.mycompany.security.bean.MyLoginUrlAuthenticationEntryPoint">
+        <beans:constructor-arg type="java.lang.String" value="/login"/>
+    </beans:bean>
+    <http auto-config="true" use-expressions="true"  entry-point-ref="authenticationEntryPoint" >
+
+        <!-- 不要过滤图片等静态资源，其中**代表可以跨越目录，*不可以跨越目录。 access="IS_AUTHENTICATED_ANONYMOUSLY":表示匿名访问
+      注：可以技持正则表达式 -->
+        <intercept-url pattern="/images/**|/**/*.ico|/css/**|/script/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <!--将自己实现的过滤器放在FILTER_SECURITY_INTERCEPTOR后面,其实放哪都差不多-->
+        <custom-filter ref="customFilterSecurityInterceptorImpl" after="FILTER_SECURITY_INTERCEPTOR" />
+
+        <form-login login-page="/login" authentication-failure-url="/login?error=true" login-processing-url="/j_security_check" authentication-success-handler-ref="authenticationSuccessHandler"  />
+
+        <!-- 控制session 的并发数量 -->
+        <!--error-if-maximum-exceeded="true"禁止后面的人登录,但如果不小心把浏览器关闭了，就要等session失效才能登录。-->
+        <!--session-fixation-protection=
+        "migrateSession" 会将原有 session 中的属性都复制到新 session 中
+        "newSession" 产生一个新session-->
+        <session-management>
+            <concurrency-control error-if-maximum-exceeded="false"
+                    max-sessions="1" expired-url="/login?error=true"  />
+        </session-management>
+
+    </http>
+
+    <!-- 配置认证管理器 -->
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider
+                user-service-ref="customUserDetailsServiceImpl">
+            <password-encoder ref="sha">
+       <salt-source user-property="usrName"/>
+               <!-- &lt;!&ndash; 添加盐值，增强系统的安全性  
+                <salt-source system-wide="system" />&ndash;&gt;-->
+            </password-encoder>
+        </authentication-provider>
+    </authentication-manager>
+</beans:beans>
